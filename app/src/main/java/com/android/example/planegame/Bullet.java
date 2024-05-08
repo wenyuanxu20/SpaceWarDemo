@@ -15,6 +15,8 @@ public class Bullet {
         return y;
     }
 
+    public static final int BULLET_PLAYER = R.mipmap.bullet1;
+
     public Bullet(Bitmap bu, int x, int y, int bulletTpye, int screenH) {
         this.bu = bu;
         this.x = x;

@@ -6,10 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
+    // 实例化spaceGameView
+    SpaceGameView spaceGameView;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new SpaceGameView(this)); // set view
+        spaceGameView = new SpaceGameView(this);
+        setContentView(spaceGameView);
+        //setContentView(new SpaceGameView(this)); // set view
     }
 
     // This method executes when the player starts the game
@@ -18,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         // Tell the gameView resume method to execute
-        //GameFrame.resume();
+        spaceGameView.resume();
     }
 
         // This method executes when the player quits the game
@@ -27,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
 
         // Tell the gameView pause method to execute
-        //GameFrame.pause();
+        spaceGameView.pause();
     }
 
 }

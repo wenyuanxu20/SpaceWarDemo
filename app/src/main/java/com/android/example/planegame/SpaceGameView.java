@@ -28,6 +28,7 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
     private boolean startFlag = false; // 游戏开始按钮的按压状态
     private Bitmap start, startPress;
     public static int gameState = GameProperty.GAME_START;
+    public boolean playing;
     //游戏项目标签
     private boolean flag = false;
 
@@ -56,7 +57,6 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
         sfh.addCallback(this);
         setFocusable(true);
     }
-
 
     // 触屏设置
     @Override
@@ -179,7 +179,6 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
     }
 
 
-
     private void logic() {
         switch (gameState) {
             case GameProperty.GAME_ING:
@@ -206,7 +205,7 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
                 }
                 // 添加子弹
                 if (countTime % 20 == 0) {
-                    Bitmap bullet_player = BitmapFactory.decodeResource(res, GameProperty.BULLET_PLAYER);
+                    Bitmap bullet_player = BitmapFactory.decodeResource(res, Bullet.BULLET_PLAYER);
                     buPlayer.add(new Bullet(bullet_player, player.getX(), player.getY(), GameProperty.TPYE_PLAYER, getHeight()));
 
                 }
@@ -332,7 +331,7 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
         }
 
     public void pause() {
-        gameState = 0;
+        playing = false;
         try {
             thread.join();
         } catch (InterruptedException e) {
@@ -342,7 +341,7 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void resume() {
-        gameState = 0;
+        playing = true;
         thread = new Thread(this);
         thread.start();
     }

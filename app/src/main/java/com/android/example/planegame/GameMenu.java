@@ -12,6 +12,9 @@ public class GameMenu {
     private Rect rect;
 //    private Bitmap start, startPress;
 
+    public static  final int GAME_MENU = R.mipmap.gamemenu;
+    public static  final int GAME_START_BTN = R.mipmap.start;
+    public static  final int GAME_START_PRESS = R.mipmap.press;
 
     public GameMenu(Bitmap gameMenu, int screenW, int screenH) {
         this.gameMenu = gameMenu;

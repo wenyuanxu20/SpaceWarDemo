@@ -10,6 +10,8 @@ public class Enemy {
     public int hp = 1;
     public boolean up = false, down = true;
 
+    public static final int GAME_ENEMY = R.mipmap.enemy;
+
     public Enemy(Bitmap en, int x, int y) {
         this.en = en;
         this.x = x;
@@ -41,8 +43,8 @@ public class Enemy {
     public boolean isCollisionWith(Bullet bullet){
         int x2 = bullet.x;
         int y2 = bullet.y;
-        int w2 = bullet.bu.getWidth(); // 直接获取bullet的public属性
-        int h2 = bullet.bu.getHeight();
+        int w2 = bullet.BitBullet.getWidth(); // 直接获取bullet的public属性
+        int h2 = bullet.BitBullet.getHeight();
         if (x >= x2 && x >= x2 + w2) {
             return false;
         } else if (x <= x2 && x + en.getWidth() <= x2) {

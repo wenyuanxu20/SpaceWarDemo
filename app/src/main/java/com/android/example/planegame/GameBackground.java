@@ -9,6 +9,9 @@ public class GameBackground {
     public Bitmap background01, background02;
     public int screenW, screenH;
     public Rect rect01, rect02;
+    public static final int GAME_BACKGROUND = R.mipmap.background;
+    public static final int HEALTH_BAR = R.mipmap.hp;
+    public static final int GAME_OVER = R.mipmap.gameover;
 
     public GameBackground(Bitmap background, int screenW, int screenH) {
         this.background01 = background;

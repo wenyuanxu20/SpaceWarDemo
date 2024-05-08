@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 public class Bullet {
-    public Bitmap bu;
+    public Bitmap BitBullet;
     public int x,y;
     private  int bulletTpye;
     private int screenH;
@@ -16,9 +16,10 @@ public class Bullet {
     }
 
     public static final int BULLET_PLAYER = R.mipmap.bullet1;
+    public static final int BULLET_ENEMY = R.mipmap.bullet2;
 
     public Bullet(Bitmap bu, int x, int y, int bulletTpye, int screenH) {
-        this.bu = bu;
+        this.BitBullet = bu;
         this.x = x;
         this.y = y;
         this.bulletTpye = bulletTpye;
@@ -27,7 +28,7 @@ public class Bullet {
     }
 
     public void draw(Canvas canvas, Paint paint) {
-        canvas.drawBitmap(bu, x, y, paint);
+        canvas.drawBitmap(BitBullet, x, y, paint);
 
     }
 

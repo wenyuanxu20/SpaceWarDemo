@@ -3,14 +3,16 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-public class player {
+public class SpaceShip {
     private int x,y;
     private Bitmap player; //phBit
     private int screenW, screenH;
     public int hp = 3;
 
+    public static final int GAME_PLAYER = R.mipmap.spaceshipup;
 
-    public player(Bitmap player,  int screenW, int screenH) { //Bitmap phBit,
+
+    public SpaceShip(Bitmap player, int screenW, int screenH) { //Bitmap phBit,
         this.player = player;
         //this.phBit = phBit;
         this.screenW = screenW;
@@ -44,18 +46,15 @@ public class player {
     public boolean isCollisionWith(Bullet bullet){
             int x2 = bullet.x;
             int y2 = bullet.y;
-            int w2 = bullet.bu.getWidth(); // 直接获取bullet的public属性
-            int h2 = bullet.bu.getHeight();
+            int w2 = bullet.BitBullet.getWidth(); // 直接获取bullet的public属性
+            int h2 = bullet.BitBullet.getHeight();
             if (x >= x2 && x >= x2 + w2) {
                 return false;
             } else if (x <= x2 && x + player.getWidth() <= x2) {
                 return false;
             } else if (y >= y2 && y >= y2 + h2) {
                 return false;
-            } else if (y <= y2 && y + player.getHeight() <= y2) {
-                return false;
-            }
-            return true;
+            } else return y > y2 || y + player.getHeight() > y2;
 
     }
 }

@@ -19,7 +19,7 @@ import java.util.Vector;
 
 public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
 
-    private SurfaceHolder sfh;
+    private SurfaceHolder SurfaceHolder;
     private Resources res;
     private static Thread thread;
     private Canvas canvas;
@@ -35,7 +35,7 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
     // gameing
     public GameBackground gameBg;
     public Bitmap lose;
-    private player player;
+    private SpaceShip SpaceShip;
 
 
     private Vector<Enemy> vcEnemy; //敌机容器
@@ -43,7 +43,7 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
     int sumEnemy = 12; //敌机总数量
     int enemySunadd = 3; // 每次敌机增加数量
 
-    int countTime = 0; //计时器
+    int countTime = 0; // Counter
 
     private Vector<Bullet> buPlayer; //玩家子弹容器
     private Vector<Bullet> buEnemy; //敌机子弹容器
@@ -52,9 +52,9 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
     public SpaceGameView(Context context) {
 
         super(context);
-        sfh = getHolder();
+        SurfaceHolder = getHolder();
         res = getResources();
-        sfh.addCallback(this);
+        SurfaceHolder.addCallback(this);
         setFocusable(true);
     }
 
@@ -82,12 +82,12 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
                 }
                 break;
             case GameProperty.GAME_ING:
-                //gameBg.draw(canvas,paint);
 
-                // 设置飞机只能移动
-                if (length(player.getX() - tempX, player.getY() - tempY)) {
-                    player.setX(tempX);
-                    player.setY(tempY);
+
+                // 设置飞机移动
+                if (length(SpaceShip.getX() - tempX, SpaceShip.getY() - tempY)) {
+                    SpaceShip.setX(tempX);
+                    SpaceShip.setY(tempY);
                 }
 
                 break;
@@ -106,7 +106,6 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
             return true;
         }
         return false;
-
     }
 
 
@@ -114,46 +113,46 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
 
-        initGame();
+        initLevel();
         thread = new Thread(this);
         flag = true;
         thread.start();
 
     }
 
-    private void initGame() { // 初始化游戏
-        // 初始化game menu
-        Bitmap gm = BitmapFactory.decodeResource(res, GameProperty.GAME_MENU);
+    private void initLevel() { // init
+        // init game menu
+        Bitmap gm = BitmapFactory.decodeResource(res, GameMenu.GAME_MENU);
         gameMenu = new GameMenu(gm, getWidth(), getHeight());
-        start = BitmapFactory.decodeResource(res, GameProperty.GAME_START_BTN); // 引用start按钮，初始化时创建按钮
-        startPress = BitmapFactory.decodeResource(res, GameProperty.GAME_START_PRESS); // 按钮的点击状态
+        start = BitmapFactory.decodeResource(res, GameMenu.GAME_START_BTN); // 引用start按钮，初始化时创建按钮
+        startPress = BitmapFactory.decodeResource(res, GameMenu.GAME_START_PRESS); // 按钮的点击状态
 
-        // 初始化background
-        Bitmap Bg = BitmapFactory.decodeResource(res, GameProperty.GAME_BACKGROUND);
+        // init background
+        Bitmap Bg = BitmapFactory.decodeResource(res, GameBackground.GAME_BACKGROUND);
         gameBg = new GameBackground(Bg, getWidth(), getHeight());
 
-        // 初始化player
-        Bitmap pl = BitmapFactory.decodeResource(res, GameProperty.GAME_PLAYER);
-        Bitmap phBit = BitmapFactory.decodeResource(res, GameProperty.GAME_PLAYER);
-        player = new player(pl, getWidth(), getHeight());
+        // init player
+        Bitmap pl = BitmapFactory.decodeResource(res, SpaceShip.GAME_PLAYER);
+        Bitmap phBit = BitmapFactory.decodeResource(res, SpaceShip.GAME_PLAYER);
+        SpaceShip = new SpaceShip(pl, getWidth(), getHeight());
 
-        // 初始化enemy
-        Bitmap en = BitmapFactory.decodeResource(res, GameProperty.GAME_ENEMY);
+        // init enemy
+        Bitmap en = BitmapFactory.decodeResource(res, Enemy.GAME_ENEMY);
         vcEnemy = new Vector<>();
         for (int i = 0; i < 3; i++) {
-            Bitmap enemy = BitmapFactory.decodeResource(res, GameProperty.GAME_ENEMY);
+            Bitmap enemy = BitmapFactory.decodeResource(res, Enemy.GAME_ENEMY);
             int y = -100;
             Random random = new Random();
             int x = random.nextInt(getWidth() - 200);
             vcEnemy.add(new Enemy(enemy, x, y));
         }
 
-        // 初始化子弹
+        // init bullet
         buPlayer = new Vector<>();
         buEnemy = new Vector<>();
 
-        // 失败界面
-        lose = BitmapFactory.decodeResource(res, GameProperty.GAME_OVER);
+        // game lose
+        lose = BitmapFactory.decodeResource(res, GameBackground.GAME_OVER);
 
 
     }
@@ -172,7 +171,7 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void run() {
         while (flag) {
-            myDraw();
+            draw();
             logic();
         }
 
@@ -195,7 +194,7 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
                 if (countTime % 40 == 0) {
                     if (enemySunadd < sumEnemy) {
                         enemySunadd++;
-                        Bitmap en = BitmapFactory.decodeResource(res, GameProperty.GAME_ENEMY);
+                        Bitmap en = BitmapFactory.decodeResource(res, Enemy.GAME_ENEMY);
 
                         int y = -100;
                         Random random = new Random();
@@ -203,16 +202,16 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
                         vcEnemy.add(new Enemy(en, x, y));
                     }
                 }
-                // 添加子弹
+                // generate bullet for player and enemy
                 if (countTime % 20 == 0) {
                     Bitmap bullet_player = BitmapFactory.decodeResource(res, Bullet.BULLET_PLAYER);
-                    buPlayer.add(new Bullet(bullet_player, player.getX(), player.getY(), GameProperty.TPYE_PLAYER, getHeight()));
+                    buPlayer.add(new Bullet(bullet_player, SpaceShip.getX(), SpaceShip.getY(), GameProperty.TPYE_PLAYER, getHeight()));
 
                 }
 
                 if (countTime % 40 == 0) {
                     // enemy bullet
-                    Bitmap bullet_enemy = BitmapFactory.decodeResource(res, GameProperty.BULLET_ENEMY);
+                    Bitmap bullet_enemy = BitmapFactory.decodeResource(res, Bullet.BULLET_ENEMY);
                     for (int i = 0; i < vcEnemy.size(); i++) {
                         Enemy enemy = vcEnemy.elementAt(i);
                         buEnemy.add(new Bullet(bullet_enemy, enemy.x, enemy.y, GameProperty.TPYE_ENEMY, getHeight()));
@@ -241,10 +240,10 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
                 // 碰撞检测
                 for (int i = 0; i < buEnemy.size(); i++) {
                     Bullet bullet = buEnemy.elementAt(i);
-                    boolean collisionWith = player.isCollisionWith(bullet);
+                    boolean collisionWith = SpaceShip.isCollisionWith(bullet);
                     if (collisionWith) {
                         buEnemy.removeElementAt(i); //碰撞后销毁bullet
-                        player.hp--; //玩家血量减一
+                        SpaceShip.hp--; //玩家血量减一
                     }
                 }
 
@@ -270,19 +269,19 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
                     }
                 }
 
-                // 玩家死亡
-                if (player.hp <= 0) {
+                // player death
+                if (SpaceShip.hp <= 0) {
                     gameState = GameProperty.GAME_LOSE;
                 }
         }
     }
-    private void myDraw() {
+    private void draw() {
             try {
-                canvas = sfh.lockCanvas();
+                canvas = SurfaceHolder.lockCanvas();
                 switch (gameState) {
 
-                    case GameProperty.GAME_START://游戏开始界面
-                        gameMenu.draw(canvas, paint); //绘制游戏menu界面
+                    case GameProperty.GAME_START:// GameStart
+                        gameMenu.draw(canvas, paint); // draw game menu
                         if (startFlag) {
                             canvas.drawBitmap(startPress, getWidth() / 2 - startPress.getWidth() / 2, getHeight() / 2 - startPress.getHeight() / 2, paint);
                         } else {
@@ -294,7 +293,7 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
                         // draw 游戏ing的背景
                         gameBg.draw(canvas, paint);
                         //
-                        player.draw(canvas, paint);
+                        SpaceShip.draw(canvas, paint);
                         //
                         for (int i = 0; i < vcEnemy.size(); i++) {
                             Enemy enemy = vcEnemy.elementAt(i);
@@ -326,7 +325,7 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                sfh.unlockCanvasAndPost(canvas);
+                SurfaceHolder.unlockCanvasAndPost(canvas);
             }
         }
 

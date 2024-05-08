@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -16,17 +17,17 @@ import androidx.annotation.NonNull;
 import java.util.Random;
 import java.util.Vector;
 
-public class GameFrame extends SurfaceView implements SurfaceHolder.Callback, Runnable {
+public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
 
     private SurfaceHolder sfh;
     private Resources res;
-    private Thread thread;
+    private static Thread thread;
     private Canvas canvas;
     private Paint paint;
     private GameMenu gameMenu; // 游戏menu界面
     private boolean startFlag = false; // 游戏开始按钮的按压状态
     private Bitmap start, startPress;
-    public int gameState = GameProperty.GAME_START;
+    public static int gameState = GameProperty.GAME_START;
     //游戏项目标签
     private boolean flag = false;
 
@@ -47,7 +48,7 @@ public class GameFrame extends SurfaceView implements SurfaceHolder.Callback, Ru
     private Vector<Bullet> buEnemy; //敌机子弹容器
 
 
-    public GameFrame(Context context) {
+    public SpaceGameView(Context context) {
 
         super(context);
         sfh = getHolder();
@@ -176,6 +177,8 @@ public class GameFrame extends SurfaceView implements SurfaceHolder.Callback, Ru
         }
 
     }
+
+
 
     private void logic() {
         switch (gameState) {
@@ -327,6 +330,22 @@ public class GameFrame extends SurfaceView implements SurfaceHolder.Callback, Ru
                 sfh.unlockCanvasAndPost(canvas);
             }
         }
+
+    public void pause() {
+        gameState = 0;
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            Log.e("Error:", "joining thread");
+        }
+
+    }
+
+    public void resume() {
+        gameState = 0;
+        thread = new Thread(this);
+        thread.start();
+    }
 }
 
 

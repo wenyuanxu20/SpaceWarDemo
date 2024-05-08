@@ -2,27 +2,34 @@ package com.android.example.planegame;
 
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        EdgeToEdge.enable(this);
-        //setContentView(R.layout.activity_main);
-        setContentView(new GameFrame(this)); // 更改后进入app界面从hello world变成自己的
-
-
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-//            return insets;
-//        });
+        setContentView(new SpaceGameView(this)); // set view
     }
+
+    // This method executes when the player starts the game
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Tell the gameView resume method to execute
+        //GameFrame.resume();
+    }
+
+        // This method executes when the player quits the game
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Tell the gameView pause method to execute
+        //GameFrame.pause();
+    }
+
 }
+
 

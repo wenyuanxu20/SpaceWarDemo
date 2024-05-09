@@ -133,8 +133,8 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
 
         // init player
         Bitmap pl = BitmapFactory.decodeResource(res, SpaceShip.GAME_PLAYER);
-        Bitmap phBit = BitmapFactory.decodeResource(res, SpaceShip.GAME_PLAYER);
-        SpaceShip = new SpaceShip(pl, getWidth(), getHeight());
+        Bitmap phBit = BitmapFactory.decodeResource(res, SpaceShip.PLAYER_HP);
+        SpaceShip = new SpaceShip(pl, phBit,getWidth(), getHeight());
 
         // init enemy
         Bitmap en = BitmapFactory.decodeResource(res, Enemy.GAME_ENEMY);

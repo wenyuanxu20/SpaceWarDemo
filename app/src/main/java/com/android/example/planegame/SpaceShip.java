@@ -5,16 +5,17 @@ import android.graphics.Paint;
 
 public class SpaceShip {
     private int x,y;
-    private Bitmap player; //phBit
+    private Bitmap player, phBit; //phBit
     private int screenW, screenH;
     public int hp = 3;
 
     public static final int GAME_PLAYER = R.mipmap.spaceshipup;
+    public static final int PLAYER_HP = R.mipmap.hpb;
 
 
-    public SpaceShip(Bitmap player, int screenW, int screenH) { //Bitmap phBit,
+    public SpaceShip(Bitmap player, Bitmap phBit, int screenW, int screenH) {
         this.player = player;
-        //this.phBit = phBit;
+        this.phBit = phBit;
         this.screenW = screenW;
         this.screenH = screenH;
         x = screenW/2;
@@ -24,7 +25,13 @@ public class SpaceShip {
 
 
     public void draw(Canvas canvas, Paint paint){
+
         canvas.drawBitmap(player, x, y, paint);
+
+        for(int i=0; i<hp;i++){
+            canvas.drawBitmap(phBit, 350*i+phBit.getWidth(), screenH-phBit.getHeight(),paint);
+        }
+
     }
 
     public void setX(int x) {

@@ -12,6 +12,8 @@ public class GameBackground {
     public static final int GAME_BACKGROUND = R.mipmap.background;
     public static final int HEALTH_BAR = R.mipmap.hp;
     public static final int GAME_OVER = R.mipmap.gameover;
+    public static final int GAME_PAUSE = R.mipmap.pause;
+
 
     public GameBackground(Bitmap background, int screenW, int screenH) {
         this.background01 = background;

@@ -27,6 +27,7 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
     private GameMenu gameMenu; // 游戏menu界面
     private boolean startFlag = false; // 游戏开始按钮的按压状态
     private Bitmap start, startPress;
+    private Bitmap pause;
     public static int gameState = GameProperty.GAME_START;
     public boolean playing;
     //游戏项目标签
@@ -63,7 +64,9 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
     public boolean onTouchEvent(MotionEvent event) {
         int tempX = (int) event.getX();
         int tempY = (int) event.getY();
+
         switch (gameState) {
+
             case GameProperty.GAME_START://游戏开始界面
                 if (tempX > getWidth() / 2 - start.getWidth() / 2 && tempX < getWidth() / 2 + start.getWidth() / 2) {
                     if (tempY > getHeight() / 2 - start.getHeight() / 2 && tempY < getHeight() / 2 + start.getHeight() / 2) {
@@ -81,14 +84,18 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
                     }
                 }
                 break;
-            case GameProperty.GAME_ING:
 
+
+            case GameProperty.GAME_ING:
 
                 // 设置飞机移动
                 if (length(SpaceShip.getX() - tempX, SpaceShip.getY() - tempY)) {
                     SpaceShip.setX(tempX);
                     SpaceShip.setY(tempY);
                 }
+
+                // pause
+
 
                 break;
             case GameProperty.GAME_LOSE:

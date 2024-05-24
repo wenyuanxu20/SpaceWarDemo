@@ -18,7 +18,6 @@ import java.util.Random;
 import java.util.Vector;
 
 public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
-
     private SurfaceHolder SurfaceHolder;
     private Resources res;
     private static Thread thread;
@@ -78,9 +77,7 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
                                 //Enter Game State
                                 gameState = GameProperty.GAME_ING;
                             }
-
                         }
-
                     }
                 }
                 break;
@@ -88,13 +85,28 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
 
             case GameProperty.GAME_ING:
 
+
+
+
                 // 设置飞机移动
                 if (length(SpaceShip.getX() - tempX, SpaceShip.getY() - tempY)) {
                     SpaceShip.setX(tempX);
                     SpaceShip.setY(tempY);
+
+//                    if (tempX > getWidth() / 2 - pause.getWidth() / 2 && tempX < getWidth() / 2 + pause.getWidth() / 2) {
+//                        if (tempY > getHeight() / 2 - pause.getHeight() / 2 && tempY < getHeight() / 2 + pause.getHeight() / 2) {
+//                            if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
+//                                playing = false;
+//                                try {
+//                                    thread.join();
+//                                } catch (InterruptedException e) {
+//                                    Log.e("Error:", "joining thread");
+//                                }
+//                            }
+//                        }
+//                    }
                 }
 
-                // pause
 
 
                 break;
@@ -137,6 +149,9 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
         // init background
         Bitmap Bg = BitmapFactory.decodeResource(res, GameBackground.GAME_BACKGROUND);
         gameBg = new GameBackground(Bg, getWidth(), getHeight());
+
+        // init pause button
+        pause = BitmapFactory.decodeResource(res,GameBackground.GAME_PAUSE);
 
         // init player
         Bitmap pl = BitmapFactory.decodeResource(res, SpaceShip.GAME_PLAYER);
@@ -297,11 +312,13 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
                         break;
 
                     case GameProperty.GAME_ING:
-                        // draw 游戏ing的背景
+                        // draw background
                         gameBg.draw(canvas, paint);
                         //
                         SpaceShip.draw(canvas, paint);
                         //
+                        canvas.drawBitmap(pause, getWidth() / 2 - pause.getWidth() / 2, getHeight() / 2 - pause.getHeight() / 2, paint);
+
                         for (int i = 0; i < vcEnemy.size(); i++) {
                             Enemy enemy = vcEnemy.elementAt(i);
                             enemy.draw(canvas, paint);
@@ -320,7 +337,7 @@ public class SpaceGameView extends SurfaceView implements SurfaceHolder.Callback
                         break;
 
                     case GameProperty.GAME_LOSE:
-                        // draw 游戏失败的界面
+                        // draw fail background
 
                         Rect rect = new Rect(0, 0, getWidth(), getHeight());
                         canvas.drawBitmap(lose, null, rect, paint);

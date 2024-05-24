@@ -27,6 +27,7 @@ public class GameBackground {
     public void draw(Canvas canvas, Paint paint){
         canvas.drawBitmap(background01, null, rect01, paint);
         canvas.drawBitmap(background02, null, rect02, paint);
+
     }
 
     // background logic:可以滚动

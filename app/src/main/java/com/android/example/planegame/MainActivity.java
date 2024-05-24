@@ -16,27 +16,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         spaceGameView = new SpaceGameView(this);
         setContentView(spaceGameView);
-        //setContentView(new SpaceGameView(this)); // set view
     }
 
     // This method executes when the player starts the game
     @Override
     protected void onResume() {
         super.onResume();
-
         // Tell the gameView resume method to execute
         spaceGameView.resume();
     }
 
-        // This method executes when the player quits the game
+    // This method executes when the player quits the game
     @Override
     protected void onPause() {
         super.onPause();
-
         // Tell the gameView pause method to execute
         spaceGameView.pause();
     }
-
 }
 
 
